@@ -68,8 +68,8 @@ vNorm = mpl.colors.Normalize(vmin=0.,vmax=2.5e-3)
 fig = plt.figure(figsize=figSize)
 lon0 = -90
 lat0 = 0.0
-latM = 30
-Np = 240
+latM = 45
+Np = 120
 Nl = Np/2
 pType = 'npstere'
 doScl = True
