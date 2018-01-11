@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- Magnetosphere test -->
+<Gamera>
+    <sim runid="msphere" doH5g="T" H5Grid="eggDbl.h5" icType="user" pdmb="1.0" pFloor="1.0e-5" dFloor="1.0e-5" rmeth="8CENT">
+    <time tFin="600.0">
+    <restart dtRes="60.0" doRes="F" resFile="res.h5">
+    <output dtOut="1.0" tsOut="100" timer="F">
+    <physics doMHD="T" doBoris="T" Ca="10.0" cHog="0.25">
+    <prob Rho0="2.5" P0="0.01" T0="120" dT0="30.0"/>
+    <ring gid="lfm" doRing="T" Nr="2" Nc1="16" Nc2="32">
+</Gamera>
+<!-- Remix test -->
+<REMIX>
+  <init init_from_file="F"/>
+  <grid Np="360" Nt="45" LowLatBoundary="45.0"/>
+  <conductance F107="124.8" pedmin="2.0" hallmin="1.0" sigma_ratio="3.0" const_sigma="True" ped0="5.0"/>
+  <solver maxitr="400" mr="30" tol_abs="1.0e-6" tol_rel="1.0e-6"/>
+  <state tilt="0.101"/>
+</REMIX>
