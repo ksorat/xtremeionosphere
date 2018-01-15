@@ -1,3 +1,4 @@
 Grid construction
 genGrid.py -gid 1 -Rin 2.0 -ni0 64 -nj0 48 -nk0 64 -o eggDbl.h5
 
+genGrid.py -gid 1 -Rin 2.0 -ni0 96 -nj0 96 -nk0 128 -o eggQuad.h5
