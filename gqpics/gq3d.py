@@ -29,7 +29,7 @@ gB0 = 4.581 #nT
 
 #Image config options
 #--------------------
-doQuiet = True
+doQuiet = False
 
 Rin = 2.51
 
