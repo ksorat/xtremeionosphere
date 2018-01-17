@@ -37,7 +37,7 @@ fIn1 = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
 fIn2 = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
 
 fIns = [fIn2,fIn1,fIn2]
-Ns = [16,240,492]
+Ns = [24,240,492]
 
 N = len(Ns)
 
