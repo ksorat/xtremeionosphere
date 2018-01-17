@@ -11,9 +11,14 @@ import pyVisit as pyv
 
 #Data info
 gdata = "~/Work/xtremeionosphere/Data/Quad/msphere.xmf"
-#gdata = "~/Work/xtremeionosphere/Data/byQuad/msphere.xmf"
+gdata = "~/Work/xTreme/fstQ/msphere.xmf"
+
 
 Nt0 = 17
+Nt0 = 18
+
+n = Nt0
+
 #Nt0 = 169
 
 #Main scaling info
@@ -24,7 +29,7 @@ gB0 = 4.581 #nT
 
 #Image config options
 #--------------------
-doQuiet = False
+doQuiet = True
 
 Rin = 2.25
 
@@ -183,7 +188,8 @@ SetOperatorOptions(ops)
 
 AddOperator("Threshold",0)
 ops = GetOperatorOptions(1)
-ops.listedVarNames = ("yRe","phi","RadAll")
+ops.listedVarNames = ("yRe","absphi","RadAll")
+DefineScalarExpression("absphi","abs(phi)")
 ops.lowerBounds = (-yCut,1.2*np.pi/2,5.0)
 ops.upperBounds = (+yCut,np.pi,50)
 
@@ -220,25 +226,35 @@ SetOperatorOptions(ops)
 
 
 #Set visual range
-v3d = GetView3D()
-v3d.viewNormal = (-0.128, 0.922099, -0.365171)
-v3d.focus = (-122.94, 0, 0)
-v3d.viewUp = (-0.0144839, -0.369899, -0.928959)
-v3d.viewAngle = 30
-v3d.parallelScale = 225.223
-v3d.nearPlane = -450.447
-v3d.farPlane = 450.447
-v3d.imagePan = (-0.24736, -0.00364242)
-v3d.imageZoom = 14.421
-v3d.perspective = 1
-v3d.eyeAngle = 2
-v3d.centerOfRotationSet = 0
-v3d.centerOfRotation = (-122.94, 0, 0)
-v3d.axis3DScaleFlag = 0
-v3d.axis3DScales = (1, 1, 1)
-v3d.shear = (0, 0, 1)
-v3d.windowValid = 1
-SetView3D(v3d)
+# v3d = GetView3D()
+# v3d.viewNormal = (-0.128, 0.922099, -0.365171)
+# v3d.focus = (-122.94, 0, 0)
+# v3d.viewUp = (-0.0144839, -0.369899, -0.928959)
+# v3d.viewAngle = 30
+# v3d.parallelScale = 225.223
+# v3d.nearPlane = -450.447
+# v3d.farPlane = 450.447
+# v3d.imagePan = (-0.24736, -0.00364242)
+# v3d.imageZoom = 14.421
+# v3d.perspective = 1
+# v3d.eyeAngle = 2
+# v3d.centerOfRotationSet = 0
+# v3d.centerOfRotation = (-122.94, 0, 0)
+# v3d.axis3DScaleFlag = 0
+# v3d.axis3DScales = (1, 1, 1)
+# v3d.shear = (0, 0, 1)
+# v3d.windowValid = 1
+# SetView3D(v3d)
+
+#pyv.ShiftWin3D(dx=0.25,dy=0.25)
+ResetView()
+pyv.ShiftWin3D(dx=-0.225)
+#pyv.SetWin3D(Zoom=4)
+pyv.SetWin3D(Ax=0,Ang=-60,Zoom=14)
+#pyv.ShiftWin3D(dx=-0.2)
+#pyv.SetWin3D(Zoom=14)
+#
+#pyv.SetWin3D(Ax=0,Ang=-60,Zoom=12)
 
 
 #Move legends
@@ -297,6 +313,10 @@ pyv.genTit("Velocity [km/s]",Pos=(x4,y4+dy),height=fH)
 #pyv.cleanLegends(plXs,plYs,plTits)
 
 #Set time and draw
-SetTimeSliderState(Nt0)
+SetTimeSliderState(n)
 DrawPlots()
-
+#Save
+swa = GetSaveWindowAttributes()
+swa.fileName = "img.%04d"%(n)
+SetSaveWindowAttributes(swa)
+SaveWindow()
