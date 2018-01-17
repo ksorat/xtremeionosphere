@@ -36,6 +36,9 @@ fIn = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
 vID = "P"
 vMin = 0
 vMax = 100
+xM = 20
+yM = 30
+
 cMap = "viridis"
 
 figSize = (8,8)
@@ -51,8 +54,8 @@ xx,yy,vU,vD = GetSlice(fIn,n1)
 Ax.pcolormesh(xx, yy,vU,vmin=vMin,vmax=vMax,cmap=cMap)
 Ax.pcolormesh(xx,-yy,vD,vmin=vMin,vmax=vMax,cmap=cMap)
 plt.axis('scaled')
-Ax.set_xlim([-25,25])
-Ax.set_ylim([-40,40])
+Ax.set_xlim([-xM,xM])
+Ax.set_ylim([-yM,yM])
 
 AxC = fig.add_subplot(gs[0,-1])
 vN = mpl.colors.Normalize(vmin=vMin,vmax=vMax)
