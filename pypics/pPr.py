@@ -72,7 +72,7 @@ for n in range(N):
 
 AxC = fig.add_subplot(gs[0,-1])
 vN = mpl.colors.Normalize(vmin=vMin,vmax=vMax)
-cb = mpl.colorbar.ColorbarBase(AxC,cmap=cMap,norm=vN,orientation='vertical')
+cb = mpl.colorbar.ColorbarBase(AxC,cmap=cMap,norm=vN,aspect=10,orientation='vertical')
 
 plt.savefig(fOut,dpi=figQ)
 
