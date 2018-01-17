@@ -37,7 +37,7 @@ fIn1 = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
 fIn2 = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
 
 fIns = [fIn2,fIn1,fIn1]
-Ns = [24,240,492]
+Ns = [30,240,492]
 
 N = len(Ns)
 
@@ -51,7 +51,7 @@ yM = 20
 
 cMap = "viridis"
 
-figSize = (8,12)
+figSize = (12,6)
 
 fOut = "xP.png"
 figQ = 300
