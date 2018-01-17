@@ -40,7 +40,8 @@ fIn1 = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
 fIn2 = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
 
 fIns = [fIn2,fIn1,fIn1]
-Ns = [30,240,492]
+#Ns = [30,240,492]
+Ns = [30,240,500]
 
 N = len(Ns)
 
@@ -48,7 +49,7 @@ N = len(Ns)
 
 vID = "P"
 vMin = 0
-vMax = 100
+vMax = 500
 xM = 20
 yM = 20
 
