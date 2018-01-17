@@ -34,7 +34,7 @@ Ns = [16,37]
 N = len(Ns)
 
 fIn = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
-fIn = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
+#fIn = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
 
 #fIn = "/Users/soratka1/Work/xtremeionosphere/Data/Quad/msphere.h5"
 
