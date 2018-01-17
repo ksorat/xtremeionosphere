@@ -50,6 +50,8 @@ N = len(Ns)
 vID = "P"
 vMin = 0
 vMax = 500
+vN = mpl.colors.Normalize(vmin=vMin,vmax=vMax)
+vN = LogNorm(vmin=vMin,vmax=vMax)
 xM = 20
 yM = 20
 
@@ -68,14 +70,14 @@ gs = gridspec.GridSpec(1,N+1,width_ratios=wR)
 for n in range(N):
 	Ax = fig.add_subplot(gs[0,n])
 	xx,yy,vU,vD = GetSlice(fIns[n],Ns[n])
-	Ax.pcolormesh(xx, yy,vU,vmin=vMin,vmax=vMax,cmap=cMap)
-	Ax.pcolormesh(xx,-yy,vD,vmin=vMin,vmax=vMax,cmap=cMap)
+	Ax.pcolormesh(xx, yy,vU,norm=vN,cmap=cMap)
+	Ax.pcolormesh(xx,-yy,vD,norm=vN,cmap=cMap)
 	plt.axis('scaled')
 	Ax.set_xlim([-xM,xM])
 	Ax.set_ylim([-yM,yM])
 
 AxC = fig.add_subplot(gs[0,-1])
-vN = mpl.colors.Normalize(vmin=vMin,vmax=vMax)
+
 cb = mpl.colorbar.ColorbarBase(AxC,cmap=cMap,norm=vN,orientation='vertical')
 
 plt.savefig(fOut,dpi=figQ)
