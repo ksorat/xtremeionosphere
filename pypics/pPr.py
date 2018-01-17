@@ -49,8 +49,8 @@ N = len(Ns)
 
 vID = "P"
 vMin = 0
-vMLog = 1.0e-3
-vMax = 500
+vMLog = 1.0e-1
+vMax = 200
 vN = mpl.colors.Normalize(vmin=vMin,vmax=vMax)
 vN = LogNorm(vmin=vMLog,vmax=vMax)
 xM = 20
