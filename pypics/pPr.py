@@ -28,7 +28,7 @@ def GetSlice(fIn,nStp,vID="P"):
 
 	return xx,yy,vU,vD
 
-Ns = [180,465]
+Ns = [240,465]
 N = len(Ns)
 
 fIn = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
