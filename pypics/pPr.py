@@ -41,7 +41,7 @@ fIn2 = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
 
 fIns = [fIn2,fIn1,fIn1]
 #Ns = [30,240,492]
-Ns = [30,240,500]
+Ns = [30,240,495]
 
 N = len(Ns)
 
