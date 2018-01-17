@@ -49,8 +49,8 @@ figQ = 300
 
 
 fig = plt.figure(figsize=figSize)
-wR = np.ones(N+1)
-wR[0] = 10
+wR = 10*np.ones(N+1)
+wR[-1] = 1
 gs = gridspec.GridSpec(1,N+1,width_ratios=wR)
 for n in range(N):
 	Ax = fig.add_subplot(gs[0,n])
