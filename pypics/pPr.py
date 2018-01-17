@@ -8,11 +8,12 @@ import matplotlib.gridspec as gridspec
 import lfmViz as lfmv
 import h5py
 
-n = 12
+n = 150
 gId = "Step#%d"%(n)
 
 fIn = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
-fIn = "/Users/soratka1/Work/xtremeionosphere/Data/Quad/msphere.h5"
+#fIn = "/Users/soratka1/Work/xtremeionosphere/Data/Quad/msphere.h5"
+
 vID = "P"
 vMin = 0
 vMax = 100
@@ -26,7 +27,7 @@ with h5py.File(fIn,"r") as f:
 	Q = f[vStr][:].T
 
 
-fOut = "pPr.png"
+fOut = "xP.png"
 figQ = 300
 Nk = X.shape[2]
 
