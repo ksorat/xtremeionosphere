@@ -27,8 +27,8 @@ def GetSlice(fIn,nStp,vID="P"):
 	vD = Q[:,:,kD].squeeze()
 
 	return xx,yy,vU,vD
-n1 = 150
-
+Ns = [180,480]
+N = len(Ns)
 
 fIn = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
 #fIn = "/Users/soratka1/Work/xtremeionosphere/Data/Quad/msphere.h5"
@@ -48,14 +48,17 @@ figQ = 300
 
 
 fig = plt.figure(figsize=figSize)
-gs = gridspec.GridSpec(1,2,width_ratios=[10,1])
-Ax = fig.add_subplot(gs[0,0])
-xx,yy,vU,vD = GetSlice(fIn,n1)
-Ax.pcolormesh(xx, yy,vU,vmin=vMin,vmax=vMax,cmap=cMap)
-Ax.pcolormesh(xx,-yy,vD,vmin=vMin,vmax=vMax,cmap=cMap)
-plt.axis('scaled')
-Ax.set_xlim([-xM,xM])
-Ax.set_ylim([-yM,yM])
+wR = np.ones(N+1)
+wR[0] = 10
+gs = gridspec.GridSpec(1,N+1,width_ratios=wR)
+for n in range(N):
+	Ax = fig.add_subplot(gs[0,n])
+	xx,yy,vU,vD = GetSlice(fIn,Ns[n])
+	Ax.pcolormesh(xx, yy,vU,vmin=vMin,vmax=vMax,cmap=cMap)
+	Ax.pcolormesh(xx,-yy,vD,vmin=vMin,vmax=vMax,cmap=cMap)
+	plt.axis('scaled')
+	Ax.set_xlim([-xM,xM])
+	Ax.set_ylim([-yM,yM])
 
 AxC = fig.add_subplot(gs[0,-1])
 vN = mpl.colors.Normalize(vmin=vMin,vmax=vMax)
