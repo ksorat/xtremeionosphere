@@ -28,13 +28,18 @@ def GetSlice(fIn,nStp,vID="P"):
 
 	return xx,yy,vU,vD
 
-Ns = [240,492]
+#Ns = [240,492]
 #Ns = [16,37]
 
-N = len(Ns)
 
-fIn = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
-#fIn = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
+
+fIn1 = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
+fIn2 = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
+
+fIns = [fIn2,fIn1,fIn2]
+Ns = [16,240,492]
+
+N = len(Ns)
 
 #fIn = "/Users/soratka1/Work/xtremeionosphere/Data/Quad/msphere.h5"
 
@@ -46,7 +51,7 @@ yM = 20
 
 cMap = "viridis"
 
-figSize = (8,8)
+figSize = (8,12)
 
 fOut = "xP.png"
 figQ = 300
@@ -58,7 +63,7 @@ wR[-1] = 1
 gs = gridspec.GridSpec(1,N+1,width_ratios=wR)
 for n in range(N):
 	Ax = fig.add_subplot(gs[0,n])
-	xx,yy,vU,vD = GetSlice(fIn,Ns[n])
+	xx,yy,vU,vD = GetSlice(fIns[n],Ns[n])
 	Ax.pcolormesh(xx, yy,vU,vmin=vMin,vmax=vMax,cmap=cMap)
 	Ax.pcolormesh(xx,-yy,vD,vmin=vMin,vmax=vMax,cmap=cMap)
 	plt.axis('scaled')
