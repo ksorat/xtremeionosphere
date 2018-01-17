@@ -2,3 +2,8 @@ Grid construction
 genGrid.py -gid 1 -Rin 2.0 -ni0 64 -nj0 48 -nk0 64 -o eggDbl.h5
 
 genGrid.py -gid 1 -Rin 2.0 -ni0 96 -nj0 96 -nk0 128 -o eggQuad.h5
+
+LFM grid attempt
+genGrid.py -gid 0 -i lfm.hdf -o lfmQ.h5 -ni0 128 -nj0 128 -nk0 128 -Rin 2.25 -Rout 35
+
+genGrid.py -gid 1 -o eggQ.h5 -ni0 128 -nj0 128 -nk0 128 -Rin 2.25

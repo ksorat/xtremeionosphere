@@ -10,8 +10,11 @@ from visit_utils.common import lsearch #lsearch(dir(),"blah")
 import pyVisit as pyv
 
 #Data info
-gdata = "~/Work/xtremeionosphere/Data/Dbl/msphere.xmf"
 gdata = "~/Work/xtremeionosphere/Data/Quad/msphere.xmf"
+#gdata = "~/Work/xtremeionosphere/Data/byQuad/msphere.xmf"
+
+Nt0 = 17
+#Nt0 = 169
 
 #Main scaling info
 #--------------------
@@ -22,7 +25,7 @@ gB0 = 4.581 #nT
 #Image config options
 #--------------------
 doQuiet = False
-Nt0 = 17
+
 Rin = 2.25
 
 #Launch viewer
@@ -44,13 +47,15 @@ eBzStr = "(3.0*zRe*zRe - Radius*Radius)*(%e)*rm5"%(MagM)
 DefineScalarExpression("RadAll","polar_radius(gMesh)")
 DefineScalarExpression("Radius","if( ge(RadAll, 2.1), RadAll, 2.1)") #Respect cutout
 DefineScalarExpression("phi","cylindrical_theta(gMesh)")
-DefineScalarExpression("inRad","if( le(RadAll, 12.5), 1.0, 0.0)")
-DefineScalarExpression("outRad","if( ge(RadAll, 3.5), 1.0, 0.0)")
-DefineScalarExpression("inPhi","if( ge(abs(phi), 0.75), 1.0, 0.0)")
-
 DefineScalarExpression("xRe","coord(gMesh)[0]")
 DefineScalarExpression("yRe","coord(gMesh)[1]")
 DefineScalarExpression("zRe","coord(gMesh)[2]")
+
+DefineScalarExpression("inRad","if( le(RadAll, 25), 1.0, 0.0)")
+DefineScalarExpression("outRad","if( ge(RadAll, 3.5), 1.0, 0.0)")
+DefineScalarExpression("inPhi","if( ge(abs(phi), 1.5), 1.0, 0.0)")
+DefineScalarExpression("inY","if( le(abs(yRe), 8.0), 1.0, 0.0)")
+
 DefineScalarExpression("rm5","Radius^(-5.0)")
 DefineScalarExpression("bScl","zonal_constant(gMesh,%e)"%(gB0))
 #Earth field
@@ -68,7 +73,7 @@ DefineScalarExpression("jScl","zonal_constant(gMesh,%e)"%(gB0/gX0))
 DefineScalarExpression("Current","abs(jScl*Jy)")
 
 #Earthward velocity
-DefineScalarExpression("vCut","inPhi*inRad*outRad")
+DefineScalarExpression("vCut","inPhi*inRad*outRad*inY")
 DefineScalarExpression("vScl","zonal_constant(gMesh,100.0)")
 DefineScalarExpression("Ve","vScl*(Vx*cos(phi)+Vy*sin(phi))")
 DefineVectorExpression("Vxy","vCut*vScl*{Vx,Vy,0.0}")
@@ -79,6 +84,7 @@ OpenDatabase(gdata)
 md0 = GetMetaData(gdata)
 
 #Create plots
+pCent = 1
 #--------------------
 
 #Earth cutout
@@ -94,7 +100,11 @@ SetPlotOptions(ops)
 #pyv.plotContour(gdata,"RadAll",values=[Rin])
 
 #Field perturbation
-pyv.lfmPCol(gdata,"dBz",vBds=[-25,25],Light=False,Legend=True,cMap="RdYlBu")
+pyv.lfmPCol(gdata,"dBz",vBds=[-25,25],Inv=True,Light=False,Legend=True,cMap="RdGy")
+pOp = GetPlotOptions()
+pOp.centering = pCent
+SetPlotOptions(pOp)
+
 AddOperator("Slice",0)
 ops = GetOperatorOptions(0)
 ops.project2d = 0
@@ -103,6 +113,10 @@ SetOperatorOptions(ops)
 
 #Pressure poloidal
 pyv.lfmPCol(gdata,"P",vBds=[1.0e-1,100],Light=False,Log=True,Legend=True,cMap="viridis")
+pOp = GetPlotOptions()
+pOp.centering = pCent
+SetPlotOptions(pOp)
+
 AddOperator("Slice",0)
 ops = GetOperatorOptions(0)
 ops.project2d = 0
@@ -137,21 +151,28 @@ tOp = GetOperatorOptions(1)
 tOp.radiusFractionBBox = 0.00025
 SetOperatorOptions(tOp)
 
-#Add velocity arrows
-AddPlot("Vector","Vxy")
+#Velocity contours
+
+vMag = 150
+NumVC = 15
+yCut = 15
+#Use fake pcolor to get right toolbar
+pyv.lfmPCol(gdata,"Ve",vBds=[-vMag,vMag],Legend=True,cMap="PiYG")
 pOp = GetPlotOptions()
+pOp.opacity = 0
+SetPlotOptions(pOp)
+
+AddPlot("Contour","Ve")
+pOp = GetPlotOptions()
+pOp.colorType = 2
+pOp.colorTableName = "PiYG"
+pOp.lineWidth = 1
 pOp.minFlag = 1
 pOp.maxFlag = 1
-pOp.min = 0.0
-pOp.max = 200.0
-pOp.colorTableName = "Cool"
-pOp.autoScale = 0
-pOp.scaleByMagnitude = 0
-pOp.lineStem = 0
-pOp.nVectors = 2600
-#pOp.scale = 0.025
-pOp.scale = 1
-pOp.geometryQuality = 1
+pOp.min = -vMag
+pOp.max = vMag
+pOp.contourNLevels = NumVC
+pOp.legendFlag = 0
 SetPlotOptions(pOp)
 
 AddOperator("Slice",0)
@@ -159,6 +180,43 @@ ops = GetOperatorOptions(0)
 ops.project2d = 0
 ops.axisType = 2
 SetOperatorOptions(ops)
+
+AddOperator("Threshold",0)
+ops = GetOperatorOptions(1)
+ops.listedVarNames = ("yRe","phi","RadAll")
+ops.lowerBounds = (-yCut,1.2*np.pi/2,5.0)
+ops.upperBounds = (+yCut,np.pi,50)
+
+SetOperatorOptions(ops)
+
+# #Add velocity arrows
+# AddPlot("Vector","Vxy")
+# pOp = GetPlotOptions()
+# pOp.minFlag = 1
+# pOp.maxFlag = 1
+# pOp.min = 0.0
+# pOp.max = 200.0
+# pOp.colorTableName = "Purples"
+# pOp.autoScale = 0
+# pOp.scaleByMagnitude = 0
+# pOp.lineStem = 0
+# pOp.nVectors = 2600
+# #pOp.scale = 0.025
+# pOp.scale = 1
+# pOp.geometryQuality = 1
+# SetPlotOptions(pOp)
+
+# AddOperator("Slice",0)
+# ops = GetOperatorOptions(0)
+# ops.project2d = 0
+# ops.axisType = 2
+# SetOperatorOptions(ops)
+
+# AddOperator("Threshold",0)
+# ops = GetOperatorOptions(1)
+# ops.listedVarNames = ("Vx")
+# ops.lowerBounds = (-1.5)
+# SetOperatorOptions(ops)
 
 
 #Set visual range
@@ -190,7 +248,7 @@ dy = 0.01
 xScl = 0.65
 yScl = 0.45
 #dBz
-x1 = 0.15
+x1 = 0.05
 y1 = 0.15
 P1 = GetAnnotationObject("Plot0001")
 P1.drawMinMax = 0
@@ -218,7 +276,7 @@ pyv.genTit("Pressure",Pos=(x2-3*dx,y2+2*dy),height=fH)
 
 #Speed
 P4 = GetAnnotationObject("Plot0004")
-x4 = 0.65
+x4 = 0.45
 y4 = y1
 
 P4.drawMinMax = 0
@@ -228,7 +286,7 @@ P4.drawTitle = 0
 P4.orientation = 2
 P4.yScale = yScl
 P4.fontHeight = fH
-pyv.genTit("Speed [km/s]",Pos=(x4,y4+dy),height=fH)
+pyv.genTit("Velocity [km/s]",Pos=(x4,y4+dy),height=fH)
 
 #GetAnnotationObject('Plot0000').drawMinMax = 0
 #GetAnnotationObject('Plot0000').managePosition = 0
