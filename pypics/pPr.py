@@ -8,6 +8,8 @@ import matplotlib.gridspec as gridspec
 import lfmViz as lfmv
 import h5py
 
+gB0 = 4.58
+
 def GetSlice(fIn,nStp,vID="P"):
 	with h5py.File(fIn,"r") as f:
 		gId = "Step#%d"%(nStp)
@@ -16,7 +18,8 @@ def GetSlice(fIn,nStp,vID="P"):
 		Z = f["Z"][:].T
 		vStr = gId+"/" + vID
 		Q = f[vStr][:].T
-
+		bZ = f["Bz"][:].T
+		print("Bz at Sunward boundary = %f"%(bZ[-1,0,0]))
 	Nk = X.shape[2]
 	xx = X[:,:,0]
 	yy = Y[:,:,0]
