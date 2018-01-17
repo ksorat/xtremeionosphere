@@ -28,7 +28,7 @@ def GetSlice(fIn,nStp,vID="P"):
 
 	return xx,yy,vU,vD
 
-Ns = [240,490]
+Ns = [240,497]
 #Ns = [16,37]
 
 N = len(Ns)
