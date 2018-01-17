@@ -58,7 +58,7 @@ figQ = 300
 
 
 fig = plt.figure(figsize=figSize)
-wR = 10*np.ones(N+1)
+wR = 20*np.ones(N+1)
 wR[-1] = 1
 gs = gridspec.GridSpec(1,N+1,width_ratios=wR)
 for n in range(N):
@@ -72,7 +72,7 @@ for n in range(N):
 
 AxC = fig.add_subplot(gs[0,-1])
 vN = mpl.colors.Normalize(vmin=vMin,vmax=vMax)
-cb = mpl.colorbar.ColorbarBase(AxC,cmap=cMap,norm=vN,aspect=10,orientation='vertical')
+cb = mpl.colorbar.ColorbarBase(AxC,cmap=cMap,norm=vN,orientation='vertical')
 
 plt.savefig(fOut,dpi=figQ)
 
