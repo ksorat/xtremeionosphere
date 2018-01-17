@@ -28,7 +28,7 @@ def GetSlice(fIn,nStp,vID="P"):
 
 	return xx,yy,vU,vD
 
-Ns = [240,495]
+Ns = [240,492]
 #Ns = [16,37]
 
 N = len(Ns)
@@ -71,4 +71,4 @@ cb = mpl.colorbar.ColorbarBase(AxC,cmap=cMap,norm=vN,orientation='vertical')
 
 plt.savefig(fOut,dpi=figQ)
 
-
+print(Ns)
