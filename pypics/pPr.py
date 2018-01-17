@@ -29,16 +29,20 @@ def GetSlice(fIn,nStp,vID="P"):
 	return xx,yy,vU,vD
 
 Ns = [240,465]
+Ns = [16,38]
+
 N = len(Ns)
 
 fIn = "/glade/u/home/skareem/Work/xTreme/fstQ/msphere.h5"
+fIn = "/glade/u/home/skareem/Work/xTreme/try/newQuad/msphere.h5"
+
 #fIn = "/Users/soratka1/Work/xtremeionosphere/Data/Quad/msphere.h5"
 
 vID = "P"
 vMin = 0
 vMax = 100
 xM = 20
-yM = 30
+yM = 20
 
 cMap = "viridis"
 
