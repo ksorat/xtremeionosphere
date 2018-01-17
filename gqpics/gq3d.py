@@ -31,7 +31,7 @@ gB0 = 4.581 #nT
 #--------------------
 doQuiet = False
 
-Rin = 2.25
+Rin = 2.51
 
 #Launch viewer
 if (doQuiet):
