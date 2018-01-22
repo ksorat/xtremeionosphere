@@ -12,11 +12,11 @@ import pyVisit as pyv
 #Data info
 gdata = "~/Work/xtremeionosphere/Data/Quad/msphere.xmf"
 gdata = "~/Work/xTreme/fstQ/msphere.xmf"
+gdata = "~/Work/xtremeionosphere/Data/lfmQ/slim.xmf"
 
-
-Nt0 = 17
-Nt0 = 18
-
+#Nt0 = 17
+#Nt0 = 18
+Nt0 = 28
 n = Nt0
 
 #Nt0 = 169
@@ -31,7 +31,7 @@ gB0 = 4.581 #nT
 #--------------------
 doQuiet = True
 
-Rin = 2.51
+Rin = 2.251
 
 #Launch viewer
 if (doQuiet):
@@ -77,6 +77,10 @@ DefineScalarExpression("dBz","bScl*Bz-eBz")
 DefineScalarExpression("jScl","zonal_constant(gMesh,%e)"%(gB0/gX0))
 DefineScalarExpression("Current","abs(jScl*Jy)")
 
+#Pressure
+pScl = 1.6726*1.0e-11*1.0e+9 #gamera->nPa
+DefineScalarExpression("pScl","zonal_constant(gMesh,%e)"%(pScl))
+DefineScalarExpression("Pnp","pScl*P")
 #Earthward velocity
 DefineScalarExpression("vCut","inPhi*inRad*outRad*inY")
 DefineScalarExpression("vScl","zonal_constant(gMesh,100.0)")
@@ -117,7 +121,7 @@ ops.axisType = 2
 SetOperatorOptions(ops)
 
 #Pressure poloidal
-pyv.lfmPCol(gdata,"P",vBds=[1.0e-1,100],Light=False,Log=True,Legend=True,cMap="viridis")
+pyv.lfmPCol(gdata,"Pnp",vBds=[1.0e-3,5],Light=False,Log=True,Legend=True,cMap="viridis")
 pOp = GetPlotOptions()
 pOp.centering = pCent
 SetPlotOptions(pOp)
@@ -130,22 +134,25 @@ SetOperatorOptions(ops)
 
 #Add field lines
 Nfl = 40
-
+Nfl2 = 3
 AddPlot("Pseudocolor","operators/IntegralCurve/B")
 pOp = GetPlotOptions()
-pOp.colorTableName = "bluehot"
+#pOp.colorTableName = "bluehot"
+pOp.colorTableName = "hot_desaturated"
 pOp.invertColorTable = 1
 pOp.legendFlag = 0
 pOp.lightingFlag = 1
 SetPlotOptions(pOp)
 
+dFLy = -0.3
 sOp = GetOperatorOptions(0)
 sOp.sourceType = 3
-sOp.planeOrigin = (0, 0, 0)
+sOp.planeOrigin = (0, dFLy, 0)
 sOp.planeNormal = (0, 1, 0)
 sOp.planeUpAxis = (0, 0, 1)
 sOp.radius = 10
 sOp.sampleDensity0 = Nfl
+sOp.sampleDensity1 = Nfl2
 sOp.termDistance = 15
 sOp.terminateByDistance = 1
 sOp.dataValue = 0
@@ -154,11 +161,13 @@ SetOperatorOptions(sOp)
 AddOperator("Tube",0)
 tOp = GetOperatorOptions(1)
 tOp.radiusFractionBBox = 0.00025
+tOp.fineness = 3
+
 SetOperatorOptions(tOp)
 
 #Velocity contours
 
-vMag = 150
+vMag = 120
 NumVC = 15
 yCut = 15
 #Use fake pcolor to get right toolbar
@@ -190,7 +199,9 @@ AddOperator("Threshold",0)
 ops = GetOperatorOptions(1)
 ops.listedVarNames = ("yRe","absphi","RadAll")
 DefineScalarExpression("absphi","abs(phi)")
-ops.lowerBounds = (-yCut,1.2*np.pi/2,5.0)
+#ops.lowerBounds = (-yCut,1.2*np.pi/2,5.0)
+#ops.upperBounds = (+yCut,np.pi,50)
+ops.lowerBounds = (-yCut,1*np.pi/2,5.0)
 ops.upperBounds = (+yCut,np.pi,50)
 
 SetOperatorOptions(ops)
@@ -248,9 +259,10 @@ SetOperatorOptions(ops)
 
 #pyv.ShiftWin3D(dx=0.25,dy=0.25)
 ResetView()
-pyv.ShiftWin3D(dx=-0.225)
+#pyv.ShiftWin3D(dx=-0.225)
+pyv.ShiftWin3D(dx=-0.3)
 #pyv.SetWin3D(Zoom=4)
-pyv.SetWin3D(Ax=0,Ang=-60,Zoom=14)
+pyv.SetWin3D(Ax=0,Ang=-60,Zoom=12)
 #pyv.ShiftWin3D(dx=-0.2)
 #pyv.SetWin3D(Zoom=14)
 #
@@ -265,7 +277,7 @@ xScl = 0.65
 yScl = 0.45
 #dBz
 x1 = 0.05
-y1 = 0.15
+y1 = 0.125
 P1 = GetAnnotationObject("Plot0001")
 P1.drawMinMax = 0
 P1.managePosition = 0
@@ -278,21 +290,21 @@ pyv.genTit("Residual Field [nT]",Pos=(x1,y1+dy),height=fH)
 
 #Pressure
 P2 = GetAnnotationObject("Plot0002")
-x2 = 0.9
+x2 = 0.85
 y2 = 0.9
 P2.drawMinMax = 0
 P2.managePosition = 0
 P2.position = (x2,y2)
 P2.drawTitle = 0
-P2.orientation = 1
+P2.orientation = 0
 P2.xScale = xScl
 P2.yScale = 1.0
 P2.fontHeight = fH
-pyv.genTit("Pressure",Pos=(x2-3*dx,y2+2*dy),height=fH)
+pyv.genTit("Pressure [nPa]",Pos=(x2-8*dx,y2+2*dy),height=fH)
 
 #Speed
 P4 = GetAnnotationObject("Plot0004")
-x4 = 0.45
+x4 = 0.7
 y4 = y1
 
 P4.drawMinMax = 0
@@ -302,6 +314,7 @@ P4.drawTitle = 0
 P4.orientation = 2
 P4.yScale = yScl
 P4.fontHeight = fH
+
 pyv.genTit("Velocity [km/s]",Pos=(x4,y4+dy),height=fH)
 
 #GetAnnotationObject('Plot0000').drawMinMax = 0
@@ -316,7 +329,9 @@ pyv.genTit("Velocity [km/s]",Pos=(x4,y4+dy),height=fH)
 SetTimeSliderState(n)
 DrawPlots()
 #Save
+
 swa = GetSaveWindowAttributes()
 swa.fileName = "img.%04d"%(n)
+swa.resConstraint = 2
 SetSaveWindowAttributes(swa)
 SaveWindow()
